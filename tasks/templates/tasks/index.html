@@ -1,0 +1,202 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Контейнер валидации транзакций</title>
+
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <header class="top-header">
+        <div class="brand-block">
+            <div class="shield-icon">◆</div>
+            <div>
+                <h1>Контейнер валидации транзакций</h1>
+                <span class="status-badge">Динамические данные</span>
+            </div>
+        </div>
+
+        <div class="header-chart-icon">⌁</div>
+    </header>
+
+    <main class="content">
+
+        <section class="control-card">
+            <div class="control-text">
+                <label for="transaction-count">
+                    Количество транзакций для симуляции:
+                </label>
+
+                <div class="control-row">
+                    <input
+                        id="transaction-count"
+                        type="number"
+                        min="100"
+                        max="10000"
+                        value="1000"
+                    >
+
+                    <button id="run-button" type="button">
+                        <span>▶</span>
+                        Запустить расчёт
+                    </button>
+                </div>
+
+                <p>
+                    Доля некорректных транзакций генерируется
+                    случайно от 3% до 15%
+                </p>
+            </div>
+
+            <div class="control-symbol">⌁</div>
+        </section>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-title">Всего<br>транзакций</span>
+                <strong id="total-value">1000</strong>
+            </div>
+
+            <div class="metric-card valid-card">
+                <span class="metric-title">Валидные</span>
+                <strong id="valid-value">930</strong>
+            </div>
+
+            <div class="metric-card invalid-card">
+                <span class="metric-title">Невалидные<br>(заблок.)</span>
+                <strong id="invalid-value">70</strong>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-title">Среднее время<br>(мс)</span>
+                <strong id="average-value">1.78</strong>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h2>Распределение транзакций</h2>
+
+                <div class="pie-wrapper">
+                    <div id="pie-chart" class="pie-chart"></div>
+
+                    <div class="legend">
+                        <div>
+                            <span class="legend-color valid-color"></span>
+                            Валидные
+                        </div>
+                        <div>
+                            <span class="legend-color invalid-color"></span>
+                            Невалидные
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h2>Гистограмма времени обработки (мс)</h2>
+
+                <div id="bar-chart" class="bar-chart"></div>
+
+                <div class="axis-label">
+                    Время обработки (мс)
+                </div>
+            </div>
+        </section>
+
+        <section class="chart-card line-card">
+            <h2>Динамика задержек (последние 100 транзакций)</h2>
+
+            <div class="line-legend">
+                <span class="line-sample"></span>
+                Время обработки (мс)
+            </div>
+
+            <div class="line-chart-wrapper">
+                <svg
+                    id="line-chart"
+                    class="line-chart"
+                    viewBox="0 0 1000 300"
+                    preserveAspectRatio="none"
+                >
+                    <g class="grid-lines">
+                        <line x1="0" y1="40" x2="1000" y2="40"></line>
+                        <line x1="0" y1="100" x2="1000" y2="100"></line>
+                        <line x1="0" y1="160" x2="1000" y2="160"></line>
+                        <line x1="0" y1="220" x2="1000" y2="220"></line>
+                        <line x1="0" y1="280" x2="1000" y2="280"></line>
+                    </g>
+
+                    <polyline
+                        id="line-polyline"
+                        points=""
+                    ></polyline>
+                </svg>
+            </div>
+
+            <div class="axis-label">Номер транзакции</div>
+        </section>
+
+        <section class="chart-card requirements-card">
+            <h2>Соответствие требованиям ТЗ</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Значение</th>
+                        <th>Требование</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Доля обнаружения невалидных транзакций</td>
+                        <td id="detection-value">99.62%</td>
+                        <td>≥ 99%</td>
+                        <td>
+                            <span class="success-status">✓ Соответствует</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Среднее время обработки</td>
+                        <td id="processing-value">1.78 мс</td>
+                        <td>≤ 5 мс</td>
+                        <td>
+                            <span class="success-status">✓ Соответствует</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Количество обработанных транзакций</td>
+                        <td id="processed-value">1000</td>
+                        <td>≥ 100</td>
+                        <td>
+                            <span class="success-status">✓ Соответствует</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        Система валидации транзакций · Django Web Application
+    </footer>
+
+</div>
+
+<script src="{% static 'tasks/app.js' %}"></script>
+
+</body>
+</html>
